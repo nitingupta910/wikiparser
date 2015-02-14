@@ -10,6 +10,7 @@ Convert wikitext to HTML (using parsoid)
  - In project source root, do: `npm install`
     - This installs parsoid parser nodejs module
  - Run backend service: `node server`
- - Parse wikipedia dump: `go run wikipedia.go enwiki-latest-pages-articles.xml.bz2`
+ - Start parsing wikipedia dump: `go run wikipedia.go enwiki-latest-pages-articles.xml.bz2`
    - Where enwiki...bz2 is wikipedia dump as downloaded from `http://meta.wikimedia.org/wiki/Data_dump_torrents#enwiki`
    - Dump reader can directly read compressed dump
+   - Each article is parsed one-by-one and it's HTML version is dumped to stdout
