@@ -10,7 +10,6 @@
   "dependencies": {
     "body-parser": "^1.11.0",
     "express": "^4.11.2",
-    "multer": "^0.1.7",
     "parsoid": "^0.2.0"
   }
 }
