@@ -1,17 +1,19 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
+	"compress/bzip2"
+	"compress/gzip"
 	"encoding/xml"
 	"flag"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"strconv"
-
-	"slidemonk/slidenlp/smlib"
 )
 
 var (
@@ -53,7 +55,7 @@ func main() {
 	}
 	defer f.Close()
 
-	r, err := smlib.Decompressor(f)
+	r, err := Decompressor(f)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -110,4 +112,26 @@ func dumpPage(p page) {
 	  log.Println("TITLE:\n", p.Title)
 	  log.Println("TEXT:\n", p.Text)*/
 
+}
+
+// Source: decompressor() from Cayley project
+const (
+	gzipMagic  = "\x1f\x8b"
+	b2zipMagic = "BZh"
+)
+
+func Decompressor(r io.Reader) (io.Reader, error) {
+	br := bufio.NewReader(r)
+	buf, err := br.Peek(3)
+	if err != nil {
+		return nil, err
+	}
+	switch {
+	case bytes.Compare(buf[:2], []byte(gzipMagic)) == 0:
+		return gzip.NewReader(br)
+	case bytes.Compare(buf[:3], []byte(b2zipMagic)) == 0:
+		return bzip2.NewReader(br), nil
+	default:
+		return br, nil
+	}
 }
