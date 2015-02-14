@@ -20,6 +20,8 @@ if (cluster.isMaster) {
     var app = express();
     app.use(bodyParser.text({limit: '50mb'}));
 
+    // wikitext to HTML parsing using Parsoid: code taken from parser.js test program included
+    // in Parsoid project's source.
     var ParserEnv = require('parsoid/lib/mediawiki.parser.environment.js').MWParserEnvironment;
     var ParsoidConfig = require('parsoid/lib/mediawiki.ParsoidConfig.js').ParsoidConfig;
     var DU = require('parsoid/lib/mediawiki.DOMUtils.js').DOMUtils;
